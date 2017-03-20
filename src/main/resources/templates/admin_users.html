@@ -39,7 +39,7 @@
 
         <td><form th:action="'/admin/users/delete/' + @{${user.getId()}}" th:method="delete">
             <input type="hidden" name="_method" value="delete" />
-            <button class="btn btn-danger" type="submit" id="submitButton">
+            <button class="btn btn-danger" th:disabled="${user.getName() == admin}" type="submit" id="submitButton">
                 <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
             </button>
             </form>
