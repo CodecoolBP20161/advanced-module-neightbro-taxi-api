@@ -1,0 +1,8 @@
+com.codecool.neighbrotaxi
+com.codecool.neighbrotaxi.controller
+com.codecool.neighbrotaxi.enums
+com.codecool.neighbrotaxi.model
+com.codecool.neighbrotaxi.repository
+com.codecool.neighbrotaxi.service
+com.codecool.neighbrotaxi.service.implementation
+com.codecool.neighbrotaxi.validator

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Neighbro Users</title>
+</head>
+<body>
+<section layout:fragment="users">
+<table class="table">
+    <thead class="thead-inverse container">
+    <th>Name</th>
+    <th>Email</th>
+    <th>Username</th>
+    <th>Roles</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody>
+    <th:block th:each="user : ${user_list}">
+    <tr>
+        <td th:text="*{user.getName()}"></td>
+        <td th:text="*{user.getEmail()}"></td>
+        <td th:text="*{user.getUsername()}"></td>
+        <td>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="Roles">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <form th:id="'addRolesToUser' + ${user.getId()}" th:action="'/admin/user/role/add/' + @{${user.getId()}}" th:method="post">
+
+                    <th:block th:each="role : ${role_list}">
+                        <label><input type="checkbox" th:checked="${user.getRoles().contains(role)}" th:text="${role.getName()}" th:value="${role.getId()}" name="id"/></label>
+                        <br/>
+                    </th:block>
+                    <button><input type="submit" value="Submit"/></button>
+                </form>
+                </div>
+            </div>
+        </td>
+
+        <td><form th:action="'/admin/users/delete/' + @{${user.getId()}}" th:method="delete">
+            <input type="hidden" name="_method" value="delete" />
+            <button class="btn btn-danger" type="submit" id="submitButton">
+                <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+            </button>
+            </form>
+        </td>
+        <td>
+            <button class="btn btn-danger" type="submit" id="addRole" th:form="'addRolesToUser' + ${user.getId()}">
+                <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+            </button>
+        </td>
+    </tr>
+    </th:block>
+    </tbody>
+</table>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,9 @@
+server:
+    port: 9000
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+    profiles:
+      active: dev

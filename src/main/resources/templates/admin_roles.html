@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Neighbro Roles</title>
+</head>
+<body>
+
+<section layout:fragment="roles">
+    <table class="table">
+        <thead class="thead-inverse container">
+        <th>ID</th>
+        <th>Role</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <th:block th:each="role : ${role_list}">
+            <tr>
+                <td th:text="*{role.getId()}"></td>
+                <td th:text="*{role.getName()}"></td>
+                <td><form th:action="'/admin/role/delete/' + @{${role.getId()}}" th:method="delete">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button class="btn btn-danger" type="submit" id="submitButton">
+                        <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                    </button>
+                </form></td>
+            </tr>
+        </th:block>
+        <tr>
+            <!-- Delete button trigger modal -->
+            <td colspan="3">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRole">
+                    <i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add new role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addNewRole" method="post" action="/admin/add-role">
+                        <input type="text" name="name" placeholder="Role"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="addNewRole" class="btn btn-primary" value="SUBMIT">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="/addRole.js"></script>
+    </section>
+
+
+</body>
+</html>
