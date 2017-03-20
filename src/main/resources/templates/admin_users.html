@@ -13,7 +13,6 @@
     <th>Username</th>
     <th>Roles</th>
     <th></th>
-    <th></th>
     </thead>
     <tbody>
     <th:block th:each="user : ${user_list}">
@@ -40,15 +39,10 @@
 
         <td><form th:action="'/admin/users/delete/' + @{${user.getId()}}" th:method="delete">
             <input type="hidden" name="_method" value="delete" />
-            <button class="btn btn-danger" type="submit" id="submitButton">
+            <button class="btn btn-danger" th:disabled="${admin_list.contains(user)}" type="submit" id="submitButton">
                 <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
             </button>
             </form>
-        </td>
-        <td>
-            <button class="btn btn-danger" type="submit" id="addRole" th:form="'addRolesToUser' + ${user.getId()}">
-                <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
-            </button>
         </td>
     </tr>
     </th:block>
