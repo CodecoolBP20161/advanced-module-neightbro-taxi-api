@@ -28,8 +28,7 @@ public class SpringPostConstructor {
     /**
      * Save an ADMIN and a USER role into the DB upon the first server start.
      */
-    @PostConstruct
-    public void fillUpDb(){
+    void fillUpDb(){
         Role role = new Role();
 
         if (roleRepository.findByName("ADMIN") == null) {
@@ -49,6 +48,8 @@ public class SpringPostConstructor {
      */
     @PostConstruct
     public void setupAdmin(){
+        fillUpDb();
+
         // TODO: think about how to reg a main admin on server startup.
 
         // Its a fast version before DEMO day
