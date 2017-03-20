@@ -3,6 +3,7 @@ package com.codecool.neighbrotaxi.model;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 
@@ -24,6 +25,8 @@ public class User {
     private Set<Role> roles;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Car> cars;
+    @Size(min=10,max=12)
+    private String phoneNumber;
 
     public Integer getId() {
         return id;
@@ -79,5 +82,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
