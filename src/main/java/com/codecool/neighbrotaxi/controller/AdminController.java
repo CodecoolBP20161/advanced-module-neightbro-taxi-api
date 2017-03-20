@@ -41,11 +41,10 @@ public class AdminController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getAllUsers(Model model) {
         if (adminService.getAllUser() == null) return "admin_users";
-        if (adminService.getAllUser().contains(adminService.getAdminUser("admin"))) {
-            model.addAttribute("admin", adminService.getAdminUser("admin").getName());
-        }
+        if (adminService.getAdminUser() == null) return "admin_users";
         model.addAttribute("user_list", adminService.getAllUser());
         model.addAttribute("role_list", adminService.getAllRole());
+        model.addAttribute("admin_list", adminService.getAdminUser());
         return "admin_users";
     }
 
