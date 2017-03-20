@@ -9,8 +9,10 @@ import com.codecool.neighbrotaxi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -72,8 +74,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User getAdminUser(String username) {
-        return userRepository.findByUsername(username);
+    public List<User> getAdminUser() {
+        List<User> adminList = new ArrayList<>();
+        for (User user : getAllUser()) {
+            adminList.addAll(user.getRoles().stream().filter(role -> role.getName().equals(RoleEnum.ADMIN.name())).map(role -> user).collect(Collectors.toList()));
+        }
+         return adminList;
     }
 
 

@@ -15,5 +15,5 @@ public interface AdminService {
     boolean deleteRole(Integer roleID);
     User getUser(Integer userID);
     void addRoleToUser(Set<Role> roles, Integer userID);
-    User getAdminUser(String username);
+    List<User> getAdminUser();
 }
