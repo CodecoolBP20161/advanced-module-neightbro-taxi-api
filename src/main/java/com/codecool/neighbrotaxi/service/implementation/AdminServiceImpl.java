@@ -71,4 +71,10 @@ public class AdminServiceImpl implements AdminService {
         userRepository.save(user);
     }
 
+    @Override
+    public User getAdminUser(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
 }
