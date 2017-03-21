@@ -92,14 +92,20 @@
 		    <version>1.4.193</version>
 	    </dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok-maven</artifactId>
+			<version>1.16.14.0</version>
+		</dependency>
 
-
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.12</version>
-			<scope>provided</scope>
+			<version>1.16.14</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -127,22 +133,12 @@
 			<version>2.8.7</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok-maven</artifactId>
-			<version>1.16.14.0</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.0.0</version>
 		</dependency>
-
-
-
 
 	</dependencies>
 
