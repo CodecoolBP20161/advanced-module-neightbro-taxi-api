@@ -16,4 +16,6 @@ public interface AdminService {
     User getUser(Integer userID);
     void addRoleToUser(Set<Role> roles, Integer userID);
     List<User> getAdminUser();
+    boolean roleIdCheck(String id);
+    List<Integer> getAllRoleID();
 }
