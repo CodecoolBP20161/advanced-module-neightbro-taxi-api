@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.controller;
 
 import com.codecool.neighbrotaxi.NeighBroTaxiApplicationTests;
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.service.AdminService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,10 +17,8 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

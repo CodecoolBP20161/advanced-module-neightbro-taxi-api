@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.controller;
 
 import com.codecool.neighbrotaxi.AbstractTest;
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.service.AdminService;
 import org.junit.Before;
 import org.junit.Test;

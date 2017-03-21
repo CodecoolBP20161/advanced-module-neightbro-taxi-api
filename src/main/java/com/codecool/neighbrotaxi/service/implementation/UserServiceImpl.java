@@ -1,9 +1,9 @@
 package com.codecool.neighbrotaxi.service.implementation;
 
 import com.codecool.neighbrotaxi.enums.RoleEnum;
-import com.codecool.neighbrotaxi.model.Role;
 import com.codecool.neighbrotaxi.model.SessionStorage;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.RoleRepository;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.service.UserService;

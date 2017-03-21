@@ -2,7 +2,7 @@ package com.codecool.neighbrotaxi.controller;
 
 import com.codecool.neighbrotaxi.NeighBroTaxiApplicationTests;
 import com.codecool.neighbrotaxi.model.SessionStorage;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.service.UserService;
 import com.codecool.neighbrotaxi.service.implementation.SecurityServiceImpl;

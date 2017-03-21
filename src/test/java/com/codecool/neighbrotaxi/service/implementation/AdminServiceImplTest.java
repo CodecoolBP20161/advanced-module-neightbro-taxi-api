@@ -1,7 +1,7 @@
 package com.codecool.neighbrotaxi.service.implementation;
 
 import com.codecool.neighbrotaxi.AbstractTest;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
