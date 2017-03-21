@@ -115,16 +115,12 @@ public class AdminController {
             return "redirect:/admin/users";
         }
 
-        for (Role role : adminService.getAllRole()) {
-            for (String roleId : id) {
-                if (role.getId().toString().equals(roleId)) roles.add(role);
-                roles.forEach(System.out::println);
-            }
+        for (String element : id) {
+            if (adminService.roleIdCheck(element)) roles.add(adminService.getAllRole().get(Integer.valueOf(element)-1));
         }
 
         for (String roleId : id) {
-            for (Role role : adminService.getAllRole())
-            if (roleId.equals(role.getId().toString())) {
+            if (adminService.roleIdCheck(roleId)) {
                 adminService.addRoleToUser(roles, Integer.parseInt(userID));
             }
         }
