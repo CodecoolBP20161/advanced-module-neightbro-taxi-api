@@ -101,6 +101,11 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
     }
 
+    /**
+     * This method is for updating an existing user.
+     * Saves the new user details.
+     * @param user
+     */
     @Override
     public void update(User user) {
         userRepository.save(user);
