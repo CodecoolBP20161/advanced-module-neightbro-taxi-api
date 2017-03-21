@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.service;
 
 
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 
 import java.util.List;
 import java.util.Set;

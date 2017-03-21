@@ -1,6 +1,6 @@
 package com.codecool.neighbrotaxi.validator;
 
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

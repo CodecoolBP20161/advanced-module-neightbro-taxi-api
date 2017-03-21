@@ -1,4 +1,4 @@
-package com.codecool.neighbrotaxi.model;
+package com.codecool.neighbrotaxi.model.entities;
 
 import org.hibernate.validator.constraints.Email;
 

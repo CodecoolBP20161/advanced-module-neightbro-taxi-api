@@ -1,4 +1,4 @@
-package com.codecool.neighbrotaxi.model;
+package com.codecool.neighbrotaxi.model.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
