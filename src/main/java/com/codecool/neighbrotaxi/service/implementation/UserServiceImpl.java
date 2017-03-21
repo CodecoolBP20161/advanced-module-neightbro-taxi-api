@@ -101,6 +101,11 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
     }
 
+    @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
     /**
      * With this method we can logging in a user. Authenticate and store the user into the session.
      * @param request HttpServletRequest object. We use this to setup the session.
