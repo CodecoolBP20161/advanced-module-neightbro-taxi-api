@@ -112,7 +112,6 @@ public class RestUserController {
      * @param user The Spring Framework parses the JSON - in the RequestBody - into a User object, and give it to the UserService's update method.
      * @return The updated user from the database.
      */
-    @CrossOrigin
     @RequestMapping(value = "/update-user", method = RequestMethod.PUT)
     public Object updateUser(@RequestBody @Valid User user, BindingResult bindingResult){
         // @Valid validate the email field
