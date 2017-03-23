@@ -105,6 +105,11 @@ public class AdminController {
         return getAllRoles(model);
     }
 
+    /**
+     * Adds a role to a user which has the ID of the param userID.
+     * @param userID Its the ID of a user passed to the controller as path variable.
+     * @return A String, and with it spring redirects to the /admin/users route.
+     */
     @RequestMapping(value = "/user/role/add/{userID}", method = RequestMethod.POST)
     public String addRoleToUser(
             @PathVariable("userID") String userID,
