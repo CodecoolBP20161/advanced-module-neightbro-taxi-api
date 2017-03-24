@@ -3,6 +3,7 @@ package com.codecool.neighbrotaxi.model.entities;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -21,9 +22,9 @@ public class User {
     private String passwordConfirm;
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Car> cars;
+    private Set<Car> cars = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -79,5 +80,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 }
