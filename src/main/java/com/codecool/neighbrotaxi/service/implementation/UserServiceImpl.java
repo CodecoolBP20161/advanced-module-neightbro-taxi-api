@@ -17,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.UniqueConstraint;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,7 +109,10 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public void update(User user) {
+    public void update(User user) throws SQLIntegrityConstraintViolationException {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new SQLIntegrityConstraintViolationException();
+        }
         userRepository.save(user);
     }
 

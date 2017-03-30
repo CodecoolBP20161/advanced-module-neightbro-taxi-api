@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
 
@@ -118,9 +119,16 @@ public class RestUserController {
         user.setId(sessionStorage.getLoggedInUser().getId());
         user.setPassword(sessionStorage.getLoggedInUser().getPassword());
         user.setPasswordConfirm(sessionStorage.getLoggedInUser().getPasswordConfirm());
+        user.setUsername(user.getEmail());
 
-        userService.update(user);
-        sessionStorage.addInfoMessage("User updated");
+        try {
+            userService.update(user);
+            sessionStorage.addInfoMessage("User updated");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            sessionStorage.addErrorMessage("Email already in use!");
+            return sessionStorage.getErrorMessages();
+        }
+
         return sessionStorage.getInfoMessages();
     }
 
