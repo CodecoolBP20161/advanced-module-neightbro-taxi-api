@@ -102,6 +102,16 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * This method is for updating an existing user.
+     * Saves the new user details.
+     * @param user
+     */
+    @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+    /**
      * With this method we can logging in a user. Authenticate and store the user into the session.
      * @param request HttpServletRequest object. We use this to setup the session.
      * @param user User object with the necessary fields for validation.

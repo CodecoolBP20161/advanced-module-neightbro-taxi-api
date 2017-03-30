@@ -13,4 +13,6 @@ public interface UserService {
     void login(HttpServletRequest request, User user) throws AuthenticationException;
     User findOne(Integer id);
     void logout(HttpServletRequest request);
+
+    void update(User user);
 }

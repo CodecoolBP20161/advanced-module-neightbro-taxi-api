@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpyBean(SessionStorage.class)
 @MockBean(SecurityServiceImpl.class)
 @Transactional
-public class RestUserControllerMvcTest extends NeighBroTaxiApplicationTests{
+public class RestUserControllerIntegrationTest extends NeighBroTaxiApplicationTests{
     @Autowired
     private WebApplicationContext webApplicationContext;
 
