@@ -6,11 +6,8 @@ import com.codecool.neighbrotaxi.model.User;
 import com.codecool.neighbrotaxi.service.SecurityService;
 import com.codecool.neighbrotaxi.service.UserService;
 import com.codecool.neighbrotaxi.validator.UserValidator;
-import org.codehaus.groovy.runtime.powerassert.SourceText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

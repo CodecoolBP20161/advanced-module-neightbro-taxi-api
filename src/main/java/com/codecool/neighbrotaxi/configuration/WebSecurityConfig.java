@@ -26,7 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/registration", "/user-login/**", "/logged-in-user/**").permitAll()
+                .antMatchers("/resources/**", "/registration", "/user-login/**", "/logged-in-user/**",
+                        "/swagger-ui.html", "/swagger-ui.html/**", "/webjars/**", "/v2/api-docs",
+                        "/configuration/ui", "/swagger-resources").permitAll()
                 .antMatchers("/users/**", "/user-roles/**", "/admin/**").hasAuthority(RoleEnum.ADMIN.name())
                 .antMatchers("/update-user").hasAuthority(RoleEnum.USER.name())
                 .anyRequest().authenticated()
