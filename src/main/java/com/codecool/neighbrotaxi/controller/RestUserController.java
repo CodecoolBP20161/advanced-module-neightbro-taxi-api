@@ -175,13 +175,16 @@ public class RestUserController {
         route.setStart(new GeoCoord(routeData.getStartLongitude(), routeData.getStartLatitude()));
         route.setDestination(new GeoCoord(routeData.getDestinationLongitude(), routeData.getDestinationLatitude()));
 
-        try {
-            routeService.saveNewRoute(route);
-        } catch (InvalidParameterException e){
-            sessionStorage.addErrorMessage(e.getMessage());
-        }
 
-        if(sessionStorage.getErrorMessages().size() == 0) sessionStorage.addInfoMessage("Route Successfully Saved");
+
+        if(sessionStorage.getErrorMessages().size() == 0){
+            try {
+                routeService.saveNewRoute(route);
+                sessionStorage.addInfoMessage("Route Successfully Saved");
+            } catch (InvalidParameterException e){
+                sessionStorage.addErrorMessage(e.getMessage());
+            }
+        }
 
         return new SerializableSessionStorage(sessionStorage);
     }
