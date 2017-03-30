@@ -6,11 +6,15 @@ import com.codecool.neighbrotaxi.model.SessionStorage;
 import com.codecool.neighbrotaxi.model.User;
 import com.codecool.neighbrotaxi.service.SecurityService;
 import com.codecool.neighbrotaxi.service.UserService;
+import com.codecool.neighbrotaxi.utils.TestUtil;
 import com.codecool.neighbrotaxi.validator.UserValidator;
+import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,9 +28,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @Transactional
@@ -34,10 +46,9 @@ import static org.mockito.Mockito.*;
 @MockBean(HttpServletRequest.class)
 @MockBean(SessionStorage.class)
 @MockBean(UserService.class)
-@MockBean(BindingResult.class)
 @MockBean(UserValidator.class)
 @MockBean(SessionStorage.class)
-@MockBean(SerializableSessionStorage.class)
+@MockBean(classes = {SerializableSessionStorage.class, BindingResult.class})
 public class RestUserControllerUnitTest extends AbstractTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -306,6 +317,81 @@ public class RestUserControllerUnitTest extends AbstractTest {
     }
 
     @Test
-    public void userUpdate_SuccessfulUpdate_ShouldAddValidInfoMessage() throws Exception {
+    public void userUpdate_errorInBindingResult_neverUpdatesUser() throws Exception {
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(bindingResult.getAllErrors()).thenReturn(new ArrayList<>(Arrays.asList(new ObjectError("error", "error"))));
+
+
+        mockMvc.perform(put("/update-user")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(userService, never()).update(any());
+    }
+
+    @Test
+    public void userUpdate_errorInBindingResult_ReturnsErrors() throws Exception {
+        when(bindingResult.hasErrors()).thenReturn(true);
+        ObjectError error = new ObjectError("error", "error");
+        ArrayList list = new ArrayList<>(Arrays.asList(error));
+        when(bindingResult.getAllErrors()).thenReturn(list);
+
+        Object object = restUserController.updateUser(user, bindingResult);
+
+        assertEquals(list, object);
+    }
+
+    @Test
+    public void userUpdate_doesntUpdateId() throws Exception {
+        User userToUpdate = user;
+        userToUpdate.setId(2);
+        user.setId(1);
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        restUserController.updateUser(userToUpdate, bindingResult);
+
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userService, atLeastOnce()).update(argumentCaptor.capture());
+        assertEquals(user.getId(), argumentCaptor.getValue().getId());
+    }
+
+    @Test
+    public void userUpdate_doesntUpdatePassword() throws Exception {
+        User userToUpdate = user;
+        userToUpdate.setPassword("new");
+        user.setPassword("old");
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        restUserController.updateUser(userToUpdate, bindingResult);
+
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userService, atLeastOnce()).update(argumentCaptor.capture());
+        assertEquals(user.getPassword(), argumentCaptor.getValue().getPassword());
+    }
+
+    @Test
+    public void userUpdate_AddInfoMessageAfterUpdate() throws Exception {
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        restUserController.updateUser(user, bindingResult);
+
+        verify(sessionStorage, atLeastOnce()).addInfoMessage("User updated");
+    }
+
+    @Test
+    public void userUpdate_ReturnInfoMassages() throws Exception {
+        ArrayList list = new ArrayList(Arrays.asList("error"));
+        user.setEmail("email@email.com");
+        when(sessionStorage.getInfoMessages()).thenReturn(list);
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        mockMvc.perform(put("/update-user")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$[0]", containsString("error")));
     }
 }
