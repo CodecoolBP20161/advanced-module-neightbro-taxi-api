@@ -12,9 +12,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -36,6 +39,11 @@ import static org.mockito.Mockito.*;
 @MockBean(SessionStorage.class)
 @MockBean(SerializableSessionStorage.class)
 public class RestUserControllerUnitTest extends AbstractTest {
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    private MockMvc mockMvc;
+
     @Autowired
     private UserService userService;
 
@@ -62,6 +70,8 @@ public class RestUserControllerUnitTest extends AbstractTest {
         user.setName("name");
         user.setPassword("pw");
         user.setEmail("email");
+
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     // Registration route tests
@@ -293,5 +303,9 @@ public class RestUserControllerUnitTest extends AbstractTest {
 
         assertEquals("loggedInUser Field", user, returnedObject.getLoggedInUser());
         assertEquals("infoMessages field", errorMessages, returnedObject.getErrorMessages());
+    }
+
+    @Test
+    public void userUpdate_SuccessfulUpdate_ShouldAddValidInfoMessage() throws Exception {
     }
 }
