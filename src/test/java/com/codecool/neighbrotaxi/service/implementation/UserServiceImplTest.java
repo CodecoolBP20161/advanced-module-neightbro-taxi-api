@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 @MockBean(SecurityContext.class)
 @MockBean(AuthenticationManager.class)
 @MockBean(SecurityContextHolder.class)
+@MockBean(UserRepository.class)
 public class UserServiceImplTest extends AbstractTest {
     @Autowired
     private UserServiceImpl userService;
@@ -72,7 +73,7 @@ public class UserServiceImplTest extends AbstractTest {
 
     @Test
     public void findByEmail() throws Exception {
-        userRepository.save(user);
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
 
         User user = userService.findByEmail("email@email.com");
 
@@ -126,12 +127,12 @@ public class UserServiceImplTest extends AbstractTest {
 
         userService.save(user);
 
-        assertNotNull(userRepository.findOne(user.getId()));
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test
     public void findByUsername_ShouldReturnUserObjectWithValidMethodCall() throws Exception {
-        userRepository.save(user);
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
 
         User returnedUser = userService.findByUsername(user.getUsername());
 
@@ -140,7 +141,7 @@ public class UserServiceImplTest extends AbstractTest {
 
     @Test
     public void findOne_ShouldReturnUserObjectWithValidMethodCall() throws Exception {
-        userRepository.save(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         User returnedUser = userService.findOne(user.getId());
 
@@ -179,5 +180,13 @@ public class UserServiceImplTest extends AbstractTest {
                 .setAttribute(stringArgumentCaptor.capture(), securityContextArgumentCaptor.capture());
         assertEquals("SPRING_SECURITY_CONTEXT", stringArgumentCaptor.getValue());
         assertEquals(SecurityContextImpl.class, securityContextArgumentCaptor.getValue().getClass());
+    }
+
+    @Test
+    public void update_callsSaveMethod() throws Exception {
+
+        userService.update(user);
+
+        verify(userRepository, times(1)).save(user);
     }
 }
