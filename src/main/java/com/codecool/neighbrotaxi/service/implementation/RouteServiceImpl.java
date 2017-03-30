@@ -31,7 +31,7 @@ public class RouteServiceImpl implements RouteService {
         if (!GeoCoordValidation(destination))
             throw new InvalidParameterException("Invalid destination point longitude or latitude values!");
         if (route.getCar() == null)
-            throw new InvalidParameterException("There is no given car!");
+            throw new InvalidParameterException("There is no valid car!");
         System.out.println(route.getDeparture().toString());
         System.out.println(new Date().toString());
         if (route.getDeparture().before(new Date()))
