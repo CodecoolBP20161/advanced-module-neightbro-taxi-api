@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html", "/swagger-ui.html/**", "/webjars/**", "/v2/api-docs",
                         "/configuration/ui", "/swagger-resources").permitAll()
                 .antMatchers("/users/**", "/user-roles/**", "/admin/**").hasAuthority(RoleEnum.ADMIN.name())
+                .antMatchers("/update-user").hasAuthority(RoleEnum.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
