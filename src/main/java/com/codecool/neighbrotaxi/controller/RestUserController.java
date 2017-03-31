@@ -120,7 +120,7 @@ public class RestUserController {
         user.setPassword(sessionStorage.getLoggedInUser().getPassword());
         user.setPasswordConfirm(sessionStorage.getLoggedInUser().getPasswordConfirm());
         user.setUsername(user.getEmail());
-        user.setRoles(user.getRoles());
+        user.setRoles(sessionStorage.getLoggedInUser().getRoles());
 
         try {
             userService.update(user);

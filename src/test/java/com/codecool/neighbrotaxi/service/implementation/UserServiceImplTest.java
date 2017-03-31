@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -192,5 +194,18 @@ public class UserServiceImplTest extends AbstractTest {
         userService.update(user);
 
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test(expected = SQLIntegrityConstraintViolationException.class)
+    public void update_duplicateEmailAddress_callsSaveMethodThrowsExpectedException() throws Exception {
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+        userService.update(user);
+    }
+
+    @Test(expected = SQLIntegrityConstraintViolationException.class)
+    public void update_callsSaveMethodNOt() throws Exception {
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+        userService.update(user);
+        verify(userRepository, never()).save(user);
     }
 }
