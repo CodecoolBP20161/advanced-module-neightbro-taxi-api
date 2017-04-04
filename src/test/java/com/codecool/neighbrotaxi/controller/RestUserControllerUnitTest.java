@@ -322,7 +322,7 @@ public class RestUserControllerUnitTest extends AbstractTest {
         when(bindingResult.getAllErrors()).thenReturn(new ArrayList<>(Arrays.asList(new ObjectError("error", "error"))));
 
 
-        mockMvc.perform(put("/update-user")
+        mockMvc.perform(post("/update-user")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(user)))
                 .andExpect(status().isOk())
@@ -387,7 +387,7 @@ public class RestUserControllerUnitTest extends AbstractTest {
         when(sessionStorage.getInfoMessages()).thenReturn(list);
         when(sessionStorage.getLoggedInUser()).thenReturn(user);
 
-        mockMvc.perform(put("/update-user")
+        mockMvc.perform(post("/update-user")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(user)))
                 .andExpect(status().isOk())
