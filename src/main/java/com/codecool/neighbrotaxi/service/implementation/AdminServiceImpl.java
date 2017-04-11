@@ -116,8 +116,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean roleIdCheck(String roleNeedToBeSet) {
-            return getAllRoleID().contains(Integer.valueOf(roleNeedToBeSet));
+    public boolean roleIdCheck(String roleIdNeedToBeSet) {
+            return getAllRoleID().contains(Integer.valueOf(roleIdNeedToBeSet));
     }
 
 }

@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.service.implementation;
 
 import com.codecool.neighbrotaxi.AbstractTest;
-import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.RoleRepository;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import org.junit.Before;
@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
@@ -41,6 +39,7 @@ public class AdminServiceImplTest extends AbstractTest {
         user.setEmail("email@email.com");
         user.setPassword("password");
         user.setName("name");
+        when(userRepository.findOne(anyInt())).thenReturn(user);
 
         role = new Role();
         role.setName("newRole");
@@ -126,5 +125,70 @@ public class AdminServiceImplTest extends AbstractTest {
 
         verify(roleRepository, times(1)).delete(anyInt());
         assertTrue(returnedValue);
+    }
+
+    @Test
+    public void getUser_ReturnTheReturnedUserByTheRepository() throws Exception {
+        user.setId(1);
+
+        Object returnedObject = adminService.getUser(1);
+
+        assertEquals(user, returnedObject);
+    }
+
+    @Test
+    public void addRoleToUser_settingUserRole_SetValidRoleToUser() throws Exception {
+        user.setId(1);
+        Set<Role> roleList = new HashSet<>();
+
+        adminService.addRoleToUser(roleList, 1);
+
+        assertEquals(roleList, user.getRoles());
+    }
+
+    @Test
+    public void getAdminUser_GiveBackValidUsers() throws Exception {
+        User admin = new User();
+        Role adminRole = new Role();
+        adminRole.setName("ADMIN");
+        admin.setRoles(new HashSet<Role>(Arrays.asList(adminRole, role)));
+        when(userRepository.findAll()).thenReturn(new ArrayList<User>(Arrays.asList(admin, user)));
+
+        List<User> returnedObjects = adminService.getAdminUser();
+
+        assertEquals("size of the returned list", 1, returnedObjects.size());
+        assertEquals("returned user", admin, returnedObjects.get(0));
+    }
+
+    @Test
+    public void getAllRoleID_() throws Exception {
+        List<Role> roleList = new ArrayList<>();
+        when(roleRepository.findAll()).thenReturn(roleList);
+
+        List<Integer> returnedList = adminService.getAllRoleID();
+
+        assertEquals(roleList, returnedList);
+    }
+
+    @Test
+    public void roleIdCheck_ThereIsRoleWithTheGivenId_ReturnsTrue() throws Exception {
+        role.setId(1);
+        List<Role> roleList = new ArrayList<>(Arrays.asList(role));
+        when(roleRepository.findAll()).thenReturn(roleList);
+
+        boolean returnedValue = adminService.roleIdCheck("1");
+
+        assertTrue(returnedValue);
+    }
+
+    @Test
+    public void roleIdCheck_NoRoleWithTheGivenId_ReturnsTrue() throws Exception {
+        role.setId(1);
+        List<Role> roleList = new ArrayList<>(Arrays.asList(role));
+        when(roleRepository.findAll()).thenReturn(roleList);
+
+        boolean returnedValue = adminService.roleIdCheck("2");
+
+        assertFalse(returnedValue);
     }
 }
