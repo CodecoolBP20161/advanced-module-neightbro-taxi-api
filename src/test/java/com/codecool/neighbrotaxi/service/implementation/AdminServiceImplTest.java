@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
+
 @Transactional
 @MockBean(classes = {UserRepository.class, RoleRepository.class})
 public class AdminServiceImplTest extends AbstractTest {
@@ -32,6 +33,7 @@ public class AdminServiceImplTest extends AbstractTest {
     private RoleRepository roleRepository;
     
     private User user;
+    private Role role;
     
     @Before
     public void setUp() throws Exception {
@@ -39,6 +41,10 @@ public class AdminServiceImplTest extends AbstractTest {
         user.setEmail("email@email.com");
         user.setPassword("password");
         user.setName("name");
+
+        role = new Role();
+        role.setName("newRole");
+        when(roleRepository.findOne(anyInt())).thenReturn(role);
     }
 
     @Test
@@ -87,10 +93,38 @@ public class AdminServiceImplTest extends AbstractTest {
 
     @Test
     public void addRole_SavingTheGivenRole() throws Exception {
-        Role role = new Role();
 
         adminService.addRole(role);
 
         verify(roleRepository, times(1)).save(role);
+    }
+
+    @Test
+    public void deleteRole_DoesNotDeleteAdminRole_ReturnsFalse() throws Exception {
+        role.setName("ADMIN");
+
+        boolean returnedValue = adminService.deleteRole(1);
+
+        verify(roleRepository, never()).delete(anyInt());
+        assertFalse(returnedValue);
+    }
+
+    @Test
+    public void deleteRole_DoesNotDeleteUserRole_ReturnsFalse() throws Exception {
+        role.setName("USER");
+
+        boolean returnedValue = adminService.deleteRole(1);
+
+        verify(roleRepository, never()).delete(anyInt());
+        assertFalse(returnedValue);
+    }
+
+    @Test
+    public void deleteRole_DeletableRole_CallDeleteMethodAndReturnTrue() throws Exception {
+
+        boolean returnedValue = adminService.deleteRole(1);
+
+        verify(roleRepository, times(1)).delete(anyInt());
+        assertTrue(returnedValue);
     }
 }
