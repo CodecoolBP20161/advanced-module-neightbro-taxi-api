@@ -1,5 +1,6 @@
 package com.codecool.neighbrotaxi.model;
 
+import com.codecool.neighbrotaxi.model.entities.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
