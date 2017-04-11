@@ -4,6 +4,7 @@ import com.codecool.neighbrotaxi.enums.RoleEnum;
 import com.codecool.neighbrotaxi.model.entities.Role;
 import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.RoleRepository;
+import com.codecool.neighbrotaxi.repository.RouteRepository;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class SpringPostConstructor {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RouteRepository routeRepository;
 
 
     /**

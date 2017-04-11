@@ -212,7 +212,7 @@ public class RestUserControllerIntegrationTest extends NeighBroTaxiApplicationTe
                 .andExpect(jsonPath("$.errorMessages[0]", containsString("Invalid username or password!")))
                 .andExpect(jsonPath("$.loggedInUser.name", containsString("anonymous")))
                 .andExpect(jsonPath("$.loggedInUser.email", containsString("anonymous@anonymous.com")))
-                .andExpect(jsonPath("$.loggedInUser.roles", nullValue()));
+                .andExpect(jsonPath("$.loggedInUser.roles", emptyIterableOf(JSONArray.class)));
     }
 
     @Test
@@ -228,7 +228,7 @@ public class RestUserControllerIntegrationTest extends NeighBroTaxiApplicationTe
                 .andExpect(jsonPath("$.errorMessages[0]", containsString("Invalid username or password!")))
                 .andExpect(jsonPath("$.loggedInUser.name", containsString("anonymous")))
                 .andExpect(jsonPath("$.loggedInUser.email", containsString("anonymous@anonymous.com")))
-                .andExpect(jsonPath("$.loggedInUser.roles", nullValue()));
+                .andExpect(jsonPath("$.loggedInUser.roles", emptyIterableOf(JSONArray.class)));
     }
 
     @Test
@@ -283,6 +283,6 @@ public class RestUserControllerIntegrationTest extends NeighBroTaxiApplicationTe
                 .andExpect(jsonPath("$.loggedInUser.username", nullValue()))
                 .andExpect(jsonPath("$.loggedInUser.password", nullValue()))
                 .andExpect(jsonPath("$.loggedInUser.passwordConfirm", nullValue()))
-                .andExpect(jsonPath("$.loggedInUser.roles", nullValue()));
+                .andExpect(jsonPath("$.loggedInUser.roles", emptyIterableOf(JSONArray.class)));
     }
 }

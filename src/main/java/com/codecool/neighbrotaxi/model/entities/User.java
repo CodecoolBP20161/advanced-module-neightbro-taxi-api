@@ -3,6 +3,7 @@ package com.codecool.neighbrotaxi.model.entities;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -10,21 +11,27 @@ import java.util.Set;
 @Entity
 @Table(name = "`user`")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+
     @Email
     private String email;
     private String username;
     private String password;
+
     @Transient
     private String passwordConfirm;
+
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Car> cars;
+    private Set<Car> cars = new HashSet<>();
+
     @Size(min=10,max=12)
     private String phoneNumber;
 
@@ -84,6 +91,14 @@ public class User {
         this.username = username;
     }
 
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -92,11 +107,4 @@ public class User {
         return phoneNumber;
     }
 
-    public Set<Car> getCars() {
-        return cars;
     }
-
-    public void setCars(Set<Car> cars) {
-        this.cars = cars;
-    }
-}
