@@ -107,11 +107,4 @@ public class User {
         return phoneNumber;
     }
 
-    public Set<Car> getCars() {
-        return cars;
     }
-
-    public void setCars(Set<Car> cars) {
-        this.cars = cars;
-    }
-}
