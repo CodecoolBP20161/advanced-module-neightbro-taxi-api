@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @Transactional
@@ -35,6 +34,8 @@ public class AdminControllerTest extends AbstractTest {
 
     private Role role;
 
+    private List<String> id;
+
 
     @Before
     public void setUp() throws Exception {
@@ -45,6 +46,8 @@ public class AdminControllerTest extends AbstractTest {
         user.setName("name");
         user.setPassword("pw");
         user.setEmail("email@email.com");
+
+        id = new ArrayList<>();
     }
 
     @Test
@@ -100,9 +103,24 @@ public class AdminControllerTest extends AbstractTest {
         roles.add(role);
         when(adminService.getAllRole()).thenReturn(roles);
 
-
         adminController.getAllRoles(model);
 
         verify(model, atLeastOnce()).addAttribute("role_list", roles);
     }
+
+    @Test
+    public void addRoleToUser_CallMethodFromAdminService() throws Exception {
+        List<Role> roles = new ArrayList<>();
+        role.setId(1);
+        roles.add(role);
+        id.add("1");
+        user.setId(1);
+
+        when(adminService.getAllRole()).thenReturn(roles);
+
+        adminController.addRoleToUser(user.getId().toString(), id);
+
+        verify(adminService, times(1)).addRoleToUser(anySetOf(Role.class), anyObject());
+    }
+
 }
