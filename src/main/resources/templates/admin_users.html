@@ -37,7 +37,7 @@
             </div>
         </td>
 
-        <td><form th:action="'/admin/users/delete/' + @{${user.getId()}}" th:method="delete">
+        <td><form th:action="'/admin/user/delete/' + @{${user.getId()}}" th:method="delete">
             <input type="hidden" name="_method" value="delete" />
             <button class="btn btn-danger" th:disabled="${admin_list.contains(user)}" type="submit" id="submitButton">
                 <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
