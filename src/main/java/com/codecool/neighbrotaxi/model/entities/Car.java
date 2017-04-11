@@ -1,4 +1,4 @@
-package com.codecool.neighbrotaxi.model;
+package com.codecool.neighbrotaxi.model.entities;
 
 import javax.persistence.*;
 

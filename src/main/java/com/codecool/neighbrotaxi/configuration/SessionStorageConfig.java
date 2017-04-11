@@ -1,7 +1,7 @@
 package com.codecool.neighbrotaxi.configuration;
 
 import com.codecool.neighbrotaxi.model.SessionStorage;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;

@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.controller;
 
 import com.codecool.neighbrotaxi.AbstractTest;
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.service.AdminService;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,21 +106,6 @@ public class AdminControllerTest extends AbstractTest {
         adminController.getAllRoles(model);
 
         verify(model, atLeastOnce()).addAttribute("role_list", roles);
-    }
-
-    @Test
-    public void addRoleToUser_CallMethodFromAdminService() throws Exception {
-        List<Role> roles = new ArrayList<>();
-        role.setId(1);
-        roles.add(role);
-        id.add("1");
-        user.setId(1);
-
-        when(adminService.getAllRole()).thenReturn(roles);
-
-        adminController.addRoleToUser(user.getId().toString(), id);
-
-        verify(adminService, times(1)).addRoleToUser(anySetOf(Role.class), anyObject());
     }
 
 }

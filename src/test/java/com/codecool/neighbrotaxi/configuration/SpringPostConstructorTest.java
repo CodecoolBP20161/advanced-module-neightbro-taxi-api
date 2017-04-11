@@ -1,25 +1,19 @@
 package com.codecool.neighbrotaxi.configuration;
 
 import com.codecool.neighbrotaxi.AbstractTest;
-import com.codecool.neighbrotaxi.enums.RoleEnum;
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.RoleRepository;
-import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import javax.transaction.Transactional;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

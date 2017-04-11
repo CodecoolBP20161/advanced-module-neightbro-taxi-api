@@ -1,8 +1,8 @@
 package com.codecool.neighbrotaxi.service.implementation;
 
 import com.codecool.neighbrotaxi.enums.RoleEnum;
-import com.codecool.neighbrotaxi.model.Role;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Role;
+import com.codecool.neighbrotaxi.model.entities.User;
 import com.codecool.neighbrotaxi.repository.RoleRepository;
 import com.codecool.neighbrotaxi.repository.UserRepository;
 import com.codecool.neighbrotaxi.service.AdminService;
@@ -114,6 +114,7 @@ public class AdminServiceImpl implements AdminService {
     public List<Integer> getAllRoleID() {
         return getAllRole().stream().map(Role::getId).collect(Collectors.toList());
     }
+
     @Override
     public boolean roleIdCheck(String roleNeedToBeSet) {
             return getAllRoleID().contains(Integer.valueOf(roleNeedToBeSet));
