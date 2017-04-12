@@ -159,36 +159,4 @@ public class AdminServiceImplTest extends AbstractTest {
         assertEquals("size of the returned list", 1, returnedObjects.size());
         assertEquals("returned user", admin, returnedObjects.get(0));
     }
-
-    @Test
-    public void getAllRoleID_() throws Exception {
-        List<Role> roleList = new ArrayList<>();
-        when(roleRepository.findAll()).thenReturn(roleList);
-
-        List<Integer> returnedList = adminService.getAllRoleID();
-
-        assertEquals(roleList, returnedList);
-    }
-
-    @Test
-    public void roleIdCheck_ThereIsRoleWithTheGivenId_ReturnsTrue() throws Exception {
-        role.setId(1);
-        List<Role> roleList = new ArrayList<>(Arrays.asList(role));
-        when(roleRepository.findAll()).thenReturn(roleList);
-
-        boolean returnedValue = adminService.roleIdCheck("1");
-
-        assertTrue(returnedValue);
-    }
-
-    @Test
-    public void roleIdCheck_NoRoleWithTheGivenId_ReturnsTrue() throws Exception {
-        role.setId(1);
-        List<Role> roleList = new ArrayList<>(Arrays.asList(role));
-        when(roleRepository.findAll()).thenReturn(roleList);
-
-        boolean returnedValue = adminService.roleIdCheck("2");
-
-        assertFalse(returnedValue);
-    }
 }
