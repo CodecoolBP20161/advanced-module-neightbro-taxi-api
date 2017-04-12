@@ -23,6 +23,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+
     /**
      * This route is the home route of the admin UI. After a successful login the server redirects here.
      * @return The name of the html template to render.
@@ -121,14 +122,11 @@ public class AdminController {
         }
 
         for (String element : id) {
-            if (adminService.roleIdCheck(element)) roles.add(adminService.getAllRole().get(Integer.valueOf(element)-1));
+            Role role = adminService.findOneRole(Integer.parseInt(element));
+            if (!(role == null)) roles.add(role);
         }
 
-        for (String roleId : id) {
-            if (adminService.roleIdCheck(roleId)) {
-                adminService.addRoleToUser(roles, Integer.parseInt(userID));
-            }
-        }
+        adminService.addRoleToUser(roles, Integer.parseInt(userID));
         return "redirect:/admin/users";
     }
 }

@@ -111,13 +111,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Integer> getAllRoleID() {
-        return getAllRole().stream().map(Role::getId).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean roleIdCheck(String roleIdNeedToBeSet) {
-            return getAllRoleID().contains(Integer.valueOf(roleIdNeedToBeSet));
+    public Role findOneRole(int roleId) {
+        return roleRepository.findOne(roleId);
     }
 
 }
