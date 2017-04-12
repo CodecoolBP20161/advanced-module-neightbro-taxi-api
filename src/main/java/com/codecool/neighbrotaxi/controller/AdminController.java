@@ -1,7 +1,7 @@
 package com.codecool.neighbrotaxi.controller;
 
 
-import com.codecool.neighbrotaxi.model.Role;
+import com.codecool.neighbrotaxi.model.entities.Role;
 import com.codecool.neighbrotaxi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

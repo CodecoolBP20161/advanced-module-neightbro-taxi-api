@@ -1,8 +1,14 @@
 package com.codecool.neighbrotaxi.controller;
 
+import com.codecool.neighbrotaxi.model.GeoCoord;
+import com.codecool.neighbrotaxi.model.RouteDataInput;
 import com.codecool.neighbrotaxi.model.SerializableSessionStorage;
 import com.codecool.neighbrotaxi.model.SessionStorage;
-import com.codecool.neighbrotaxi.model.User;
+import com.codecool.neighbrotaxi.model.entities.Car;
+import com.codecool.neighbrotaxi.model.entities.Route;
+import com.codecool.neighbrotaxi.model.entities.User;
+import com.codecool.neighbrotaxi.service.CarService;
+import com.codecool.neighbrotaxi.service.RouteService;
 import com.codecool.neighbrotaxi.service.SecurityService;
 import com.codecool.neighbrotaxi.service.UserService;
 import com.codecool.neighbrotaxi.validator.UserValidator;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.InvalidParameterException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
@@ -29,6 +36,12 @@ public class RestUserController {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    private CarService carService;
+
+    @Autowired
+    private RouteService routeService;
 
     @Autowired
     private SessionStorage sessionStorage;
@@ -110,7 +123,7 @@ public class RestUserController {
      * @param user The Spring Framework parses the JSON - in the RequestBody - into a User object, and give it to the UserService's update method.
      * @return The updated user from the database.
      */
-    @RequestMapping(value = "/update-user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update-user", method = RequestMethod.POST)
     public Object updateUser(@RequestBody @Valid User user, BindingResult bindingResult){
         // @Valid validate the email field
         if (bindingResult.hasErrors()) {
@@ -145,5 +158,42 @@ public class RestUserController {
         }
 
         return sessionStorage.getLoggedInUser();
+    }
+
+    /**
+     * Route for add new route data connected with a car entity.
+     * @param routeData It gets a JSON in the request body, and parse it into a RouteData object.
+     * @return a sessionStorage object with the valid message. (error or info message)
+     */
+    @RequestMapping(value = "/add-route", method = RequestMethod.POST)
+    public Object addNewRoute(@RequestBody RouteDataInput routeData){
+        sessionStorage.clearMessages();
+
+        if (routeData.getDeparture() == null)
+            sessionStorage.addErrorMessage("Departure time is not given");
+
+        Car car = null;
+        for (Car userCar: sessionStorage.getLoggedInUser().getCars()){
+            if (Objects.equals(userCar.getId(), routeData.getCarId())) car = userCar;
+        }
+
+        Route route = new Route();
+        route.setDeparture(routeData.getDeparture());
+        route.setCar(car);
+        route.setStart(new GeoCoord(routeData.getStartLongitude(), routeData.getStartLatitude()));
+        route.setDestination(new GeoCoord(routeData.getDestinationLongitude(), routeData.getDestinationLatitude()));
+
+
+
+        if(sessionStorage.getErrorMessages().size() == 0){
+            try {
+                routeService.saveNewRoute(route);
+                sessionStorage.addInfoMessage("Route Successfully Saved");
+            } catch (InvalidParameterException e){
+                sessionStorage.addErrorMessage(e.getMessage());
+            }
+        }
+
+        return new SerializableSessionStorage(sessionStorage);
     }
 }
