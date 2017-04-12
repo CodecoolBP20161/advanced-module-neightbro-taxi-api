@@ -124,12 +124,12 @@ public class RestUserController {
 
         try {
             userService.update(user);
-            sessionStorage.addInfoMessage("User updated");
         } catch (SQLIntegrityConstraintViolationException e) {
             sessionStorage.addErrorMessage("Email already in use!");
             return sessionStorage.getErrorMessages();
         }
 
+        sessionStorage.addInfoMessage("User updated");
         return sessionStorage.getInfoMessages();
     }
 

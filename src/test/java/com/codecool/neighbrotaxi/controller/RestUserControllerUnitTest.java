@@ -8,10 +8,11 @@ import com.codecool.neighbrotaxi.service.SecurityService;
 import com.codecool.neighbrotaxi.service.UserService;
 import com.codecool.neighbrotaxi.utils.TestUtil;
 import com.codecool.neighbrotaxi.validator.UserValidator;
-import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,21 +25,17 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @Transactional
@@ -393,5 +390,23 @@ public class RestUserControllerUnitTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$[0]", containsString("error")));
+    }
+
+    @Test
+    public void userUpdate_DuplicateEmailDoesentGetSaved() throws Exception {
+
+        ArrayList list = new ArrayList(Arrays.asList("Email already in use!"));
+        Mockito.doThrow(new SQLIntegrityConstraintViolationException()).when(userService).update(any());
+        user.setEmail("email@email.com");
+        when(sessionStorage.getErrorMessages()).thenReturn(list);
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        mockMvc.perform(put("/update-user")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$[0]", containsString("Email already in use!")));
+        // TODO: 2017.03.31. finish this 
     }
 }
