@@ -114,7 +114,7 @@ public class AdminController {
     @RequestMapping(value = "/user/role/add/{userID}", method = RequestMethod.POST)
     public String addRoleToUser(
             @PathVariable("userID") String userID,
-            @RequestParam(value = "id", required=false) List<String>id) {
+            @RequestParam(value = "id", required=false) List<String> id) {
         Set<Role> roles = new HashSet<>();
         if (id == null) {
             adminService.addRoleToUser(roles, Integer.parseInt(userID));
@@ -123,7 +123,7 @@ public class AdminController {
 
         for (String element : id) {
             Role role = adminService.findOneRole(Integer.parseInt(element));
-            if (!(role == null)) roles.add(role);
+            if (role != null) roles.add(role);
         }
 
         adminService.addRoleToUser(roles, Integer.parseInt(userID));
