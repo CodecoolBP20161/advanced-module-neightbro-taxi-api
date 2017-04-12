@@ -16,4 +16,5 @@ public interface AdminService {
     User getUser(Integer userID);
     void addRoleToUser(Set<Role> roles, Integer userID);
     List<User> getAdminUser();
+    public Role findOneRole(int roleId);
 }

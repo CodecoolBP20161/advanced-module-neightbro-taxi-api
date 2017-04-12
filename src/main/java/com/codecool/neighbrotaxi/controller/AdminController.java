@@ -23,6 +23,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+
     /**
      * This route is the home route of the admin UI. After a successful login the server redirects here.
      * @return The name of the html template to render.
@@ -113,26 +114,19 @@ public class AdminController {
     @RequestMapping(value = "/user/role/add/{userID}", method = RequestMethod.POST)
     public String addRoleToUser(
             @PathVariable("userID") String userID,
-            @RequestParam(value = "id", required=false) List<String>id) {
+            @RequestParam(value = "id", required=false) List<String> id) {
         Set<Role> roles = new HashSet<>();
         if (id == null) {
             adminService.addRoleToUser(roles, Integer.parseInt(userID));
             return "redirect:/admin/users";
         }
 
-        for (Role role : adminService.getAllRole()) {
-            for (String roleId : id) {
-                if (role.getId().toString().equals(roleId)) roles.add(role);
-                roles.forEach(System.out::println);
-            }
+        for (String element : id) {
+            Role role = adminService.findOneRole(Integer.parseInt(element));
+            if (role != null) roles.add(role);
         }
 
-        for (String roleId : id) {
-            for (Role role : adminService.getAllRole())
-            if (roleId.equals(role.getId().toString())) {
-                adminService.addRoleToUser(roles, Integer.parseInt(userID));
-            }
-        }
+        adminService.addRoleToUser(roles, Integer.parseInt(userID));
         return "redirect:/admin/users";
     }
 }
