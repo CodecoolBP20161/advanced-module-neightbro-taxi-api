@@ -110,5 +110,9 @@ public class AdminServiceImpl implements AdminService {
          return adminList;
     }
 
+    @Override
+    public Role findOneRole(int roleId) {
+        return roleRepository.findOne(roleId);
+    }
 
 }

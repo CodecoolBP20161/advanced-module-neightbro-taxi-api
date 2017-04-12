@@ -3,8 +3,8 @@ package com.codecool.neighbrotaxi.model.entities;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 
