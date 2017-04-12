@@ -159,4 +159,13 @@ public class AdminServiceImplTest extends AbstractTest {
         assertEquals("size of the returned list", 1, returnedObjects.size());
         assertEquals("returned user", admin, returnedObjects.get(0));
     }
+
+    @Test
+    public void findOneRole_ReturnValidData() throws Exception {
+        role.setId(1);
+
+        Object returnedObject = adminService.findOneRole(1);
+
+        assertEquals(role, returnedObject);
+    }
 }
