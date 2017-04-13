@@ -130,11 +130,25 @@ public class RestUserController {
         if (bindingResult.hasErrors()) {
             return bindingResult.getAllErrors();
         }
+        if(user.getCars() == null) {
+            user.setCars(sessionStorage.getLoggedInUser().getCars());
+        }
+        if(user.getPhoneNumber() == null) {
+            user.setPhoneNumber(sessionStorage.getLoggedInUser().getPhoneNumber());
+        }
+        if(user.getName() == null) {
+            user.setName(sessionStorage.getLoggedInUser().getName());
+        }
+        if(user.getEmail() == null) {
+            user.setEmail(sessionStorage.getLoggedInUser().getEmail());
+        }
+
         user.setId(sessionStorage.getLoggedInUser().getId());
         user.setPassword(sessionStorage.getLoggedInUser().getPassword());
         user.setPasswordConfirm(sessionStorage.getLoggedInUser().getPasswordConfirm());
         user.setUsername(user.getEmail());
         user.setRoles(sessionStorage.getLoggedInUser().getRoles());
+
 
         try {
             userService.update(user);
