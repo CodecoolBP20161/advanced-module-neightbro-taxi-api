@@ -4,6 +4,7 @@ import com.codecool.neighbrotaxi.model.entities.User;
 import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 public interface UserService {
@@ -14,5 +15,5 @@ public interface UserService {
     User findOne(Integer id);
     void logout(HttpServletRequest request);
 
-    void update(User user);
+    void update(User user) throws SQLIntegrityConstraintViolationException;
 }

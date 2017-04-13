@@ -15,6 +15,7 @@ import com.codecool.neighbrotaxi.validator.UserValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.InvalidParameterException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 import static org.hamcrest.Matchers.containsString;
@@ -37,6 +39,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 
 @Transactional
@@ -454,5 +457,23 @@ public class RestUserControllerUnitTest extends AbstractTest {
         restUserController.addNewRoute(routeData);
 
         verify(sessionStorage, times(1)).addErrorMessage(anyString());
+    }
+
+    @Test
+    public void userUpdate_DuplicateEmailDoesentGetSaved() throws Exception {
+
+        ArrayList list = new ArrayList(Arrays.asList("Email already in use!"));
+        Mockito.doThrow(new SQLIntegrityConstraintViolationException()).when(userService).update(any());
+        user.setEmail("email@email.com");
+        when(sessionStorage.getErrorMessages()).thenReturn(list);
+        when(sessionStorage.getLoggedInUser()).thenReturn(user);
+
+        mockMvc.perform(post("/update-user")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$[0]", containsString("Email already in use!")));
+        // TODO: 2017.03.31. finish this 
     }
 }

@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.InvalidParameterException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import java.util.Objects;
 
 
@@ -128,11 +130,33 @@ public class RestUserController {
         if (bindingResult.hasErrors()) {
             return bindingResult.getAllErrors();
         }
+        if(user.getCars() == null) {
+            user.setCars(sessionStorage.getLoggedInUser().getCars());
+        }
+        if(user.getPhoneNumber() == null) {
+            user.setPhoneNumber(sessionStorage.getLoggedInUser().getPhoneNumber());
+        }
+        if(user.getName() == null) {
+            user.setName(sessionStorage.getLoggedInUser().getName());
+        }
+        if(user.getEmail() == null) {
+            user.setEmail(sessionStorage.getLoggedInUser().getEmail());
+        }
+
         user.setId(sessionStorage.getLoggedInUser().getId());
         user.setPassword(sessionStorage.getLoggedInUser().getPassword());
         user.setPasswordConfirm(sessionStorage.getLoggedInUser().getPasswordConfirm());
+        user.setUsername(user.getEmail());
+        user.setRoles(sessionStorage.getLoggedInUser().getRoles());
 
-        userService.update(user);
+
+        try {
+            userService.update(user);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            sessionStorage.addErrorMessage("Email already in use!");
+            return sessionStorage.getErrorMessages();
+        }
+
         sessionStorage.addInfoMessage("User updated");
         return sessionStorage.getInfoMessages();
     }
